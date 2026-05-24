@@ -1,0 +1,2431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>火火第二周康复方案</title>
+<style>
+:root {
+  --primary: #e53935;
+  --primary-light: #ff5252;
+  --primary-lighter: #ffcdd2;
+  --primary-bg: #ffebee;
+  --accent: #ff9800;
+  --accent-light: #ffe0b2;
+  --danger: #ef5350;
+  --danger-light: #ffcdd2;
+  --text: #c62828;
+  --text-secondary: #d32f2f;
+  --text-muted: #e57373;
+  --bg: #fce4ec;
+  --card: #ffffff;
+  --border: #ffcdd2;
+  --shadow: 0 2px 8px rgba(229,57,53,0.1);
+  --shadow-lg: 0 4px 16px rgba(229,57,53,0.15);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+.app-container {
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--bg);
+  position: relative;
+}
+@media (max-width: 480px) {
+  .app-container { max-width: 100vw; }
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  padding: 20px 20px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.app-header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.app-header h1 .icon { font-size: 24px; }
+.app-header .date-info {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* Navigation */
+.nav-bar {
+  display: flex;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 72px;
+  z-index: 99;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.nav-item {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: var(--transition);
+  border-bottom: 3px solid transparent;
+  user-select: none;
+}
+.nav-item.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.nav-item:hover { color: var(--primary-light); }
+
+/* Pages */
+.page { display: none; padding: 16px 16px 100px; animation: fadeIn 0.3s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* Streak Banner */
+.streak-banner {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 12px rgba(255,152,0,0.3);
+}
+.streak-banner .streak-num {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+}
+.streak-banner .streak-label {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+.streak-banner .streak-icon { font-size: 40px; }
+
+/* Stats Cards */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  padding: 14px 12px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.stat-card .stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.stat-card .stat-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Module Section */
+.module-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+.module-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  gap: 10px;
+  transition: var(--transition);
+}
+.module-header:hover { background: var(--primary-bg); }
+.module-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.module-icon.m1 { background: #ffebee; }
+.module-icon.m2 { background: #fff3e0; }
+.module-icon.m3 { background: #e3f2fd; }
+.module-icon.m4 { background: #f3e5f5; }
+.module-icon.m5 { background: #e8eaf6; }
+.module-title { flex: 1; }
+.module-title h3 { font-size: 15px; font-weight: 600; }
+.module-title .module-progress { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.module-arrow {
+  font-size: 12px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+.module-arrow.open { transform: rotate(180deg); }
+.module-complete-badge {
+  background: var(--primary);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* Exercise Item */
+.exercise-list { padding: 0 12px 12px; }
+.exercise-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  gap: 10px;
+  position: relative;
+}
+.exercise-item:hover { background: var(--primary-bg); }
+.exercise-item.starred { background: #fffde7; border-left: 3px solid var(--accent); }
+.exercise-item.completed { opacity: 0.6; }
+.exercise-item.completed .exercise-name { text-decoration: line-through; }
+.exercise-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.exercise-checkbox.checked {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+  font-size: 12px;
+}
+.exercise-info { flex: 1; min-width: 0; }
+.exercise-name {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.exercise-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.exercise-star {
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 4px;
+}
+.exercise-star.active { color: var(--accent); }
+.exercise-note-icon {
+  font-size: 14px;
+  color: var(--primary-light);
+  flex-shrink: 0;
+}
+
+/* Total Progress Bar */
+.total-progress {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-top: 16px;
+}
+.total-progress .progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.progress-bar-bg {
+  height: 12px;
+  background: var(--primary-lighter);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  border-radius: 6px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+/* Completion Message */
+.completion-msg {
+  background: linear-gradient(135deg, var(--primary), #d32f2f);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  margin-top: 16px;
+  animation: popIn 0.5s cubic-bezier(0.68,-0.55,0.27,1.55);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.completion-msg .big-emoji { font-size: 40px; margin-bottom: 8px; }
+.completion-msg h3 { font-size: 18px; margin-bottom: 4px; }
+.completion-msg p { font-size: 13px; opacity: 0.9; }
+@keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+
+/* Modal / Bottom Sheet */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.show { display: flex; }
+.modal-sheet {
+  background: var(--card);
+  border-radius: 20px 20px 0 0;
+  width: 100%;
+  max-width: 800px;
+  max-height: 85vh;
+  overflow-y: auto;
+  animation: slideUp 0.35s cubic-bezier(0.4,0,0.2,1);
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: #ccc;
+  border-radius: 2px;
+  margin: 12px auto;
+}
+.modal-content { padding: 0 20px 20px; }
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-module-tag {
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+.modal-module-tag.m1 { background: #ffebee; color: #c62828; }
+.modal-module-tag.m2 { background: #fff3e0; color: #e65100; }
+.modal-module-tag.m3 { background: #e3f2fd; color: #1565c0; }
+.modal-module-tag.m4 { background: #f3e5f5; color: #7b1fa2; }
+.modal-module-tag.m5 { background: #e8eaf6; color: #3f51b5; }
+.modal-meta-row {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+.modal-meta-item {
+  background: var(--primary-bg);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.modal-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 16px 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.modal-steps { list-style: none; counter-reset: step; }
+.modal-steps li {
+  counter-increment: step;
+  padding: 8px 0 8px 36px;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.6;
+  border-bottom: 1px solid var(--primary-lighter);
+}
+.modal-steps li:last-child { border-bottom: none; }
+.modal-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-tips {
+  background: #fffde7;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.7;
+  border-left: 3px solid var(--accent);
+}
+.modal-note-area {
+  margin-top: 16px;
+}
+.modal-note-area textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+  outline: none;
+  transition: var(--transition);
+}
+.modal-note-area textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
+.modal-btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  flex: 1;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: #c62828; }
+.btn-secondary { background: var(--primary-lighter); color: var(--primary); }
+.btn-secondary:hover { background: var(--primary-bg); }
+.btn-danger { background: var(--danger-light); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+
+/* Library Page */
+.library-module {
+  margin-bottom: 20px;
+}
+.library-module-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.library-exercise {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  margin-bottom: 6px;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--border);
+}
+.library-exercise:hover { transform: translateX(4px); box-shadow: var(--shadow-lg); }
+.library-exercise .le-num {
+  width: 28px;
+  height: 28px;
+  background: var(--primary-bg);
+  color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.library-exercise .le-info { flex: 1; }
+.library-exercise .le-name { font-size: 14px; font-weight: 500; }
+.library-exercise .le-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.library-exercise .le-star { font-size: 16px; cursor: pointer; }
+.library-exercise .le-star.active { color: var(--accent); }
+
+/* Progress Page */
+.calendar-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.calendar-header h3 { font-size: 16px; font-weight: 600; }
+.calendar-nav {
+  display: flex;
+  gap: 8px;
+}
+.calendar-nav button {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.calendar-nav button:hover { background: var(--primary-bg); }
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendar-day-label {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px;
+}
+.calendar-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+.calendar-day.empty { background: transparent; }
+.calendar-day.today { border: 2px solid var(--primary); font-weight: 700; }
+.calendar-day.complete { background: var(--primary); color: #fff; }
+.calendar-day.partial { background: var(--accent); color: #fff; }
+.calendar-day.missed { background: var(--danger-light); color: var(--danger); }
+.calendar-day.future { color: #ccc; }
+.calendar-day.past-empty { background: #f5f5f5; color: #bbb; }
+
+/* Week Chart */
+.week-chart-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.week-chart-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.week-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 120px;
+  padding: 0 8px;
+}
+.week-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+.week-bar {
+  width: 28px;
+  border-radius: 6px 6px 0 0;
+  background: var(--primary-lighter);
+  transition: height 0.5s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  min-height: 4px;
+}
+.week-bar.filled { background: linear-gradient(180deg, var(--primary), var(--primary-light)); }
+.week-bar-label { font-size: 11px; color: var(--text-muted); }
+.week-bar-value { font-size: 10px; font-weight: 600; color: var(--primary); }
+
+/* Cumulative Stats */
+.cumulative-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.cumulative-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.cumulative-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.cumulative-item {
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.cumulative-item .ci-value { font-size: 28px; font-weight: 800; color: var(--primary); }
+.cumulative-item .ci-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Module Stats */
+.module-stats-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.module-stats-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.module-stat-item {
+  margin-bottom: 12px;
+}
+.module-stat-item:last-child { margin-bottom: 0; }
+.module-stat-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+.module-stat-header .ms-name { font-weight: 500; }
+.module-stat-header .ms-pct { font-weight: 700; color: var(--primary); }
+.module-stat-bar {
+  height: 8px;
+  background: var(--primary-lighter);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.module-stat-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+.module-stat-fill.m1 { background: #e53935; }
+.module-stat-fill.m2 { background: #ff9800; }
+.module-stat-fill.m3 { background: #2196f3; }
+.module-stat-fill.m4 { background: #9c27b0; }
+.module-stat-fill.m5 { background: #3f51b5; }
+
+/* Settings Page */
+.settings-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.settings-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--primary-lighter);
+}
+.setting-item:last-child { border-bottom: none; }
+.setting-label { font-size: 14px; }
+.setting-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.setting-time-info { font-size: 11px; color: var(--text-secondary); margin-top: 4px; opacity: 0.8; }
+.sync-tip-card {
+  background: #e3f2fd;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-left: 4px solid #1976d2;
+  box-shadow: var(--shadow);
+}
+.sync-tip-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1565c0;
+  margin-bottom: 8px;
+}
+.sync-tip-content {
+  font-size: 13px;
+  color: #37474f;
+  line-height: 1.8;
+}
+.sync-tip-row {
+  padding: 2px 0;
+}
+.sync-tip-highlight {
+  color: #1565c0;
+  font-weight: 500;
+  margin-top: 4px;
+}
+.starred-exercise-list { margin-top: 8px; }
+.starred-exercise-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  font-size: 13px;
+  border-bottom: 1px solid var(--primary-lighter);
+}
+.starred-exercise-item:last-child { border-bottom: none; }
+.starred-exercise-item .se-star { color: var(--accent); }
+.no-starred { font-size: 13px; color: var(--text-muted); text-align: center; padding: 16px; }
+
+/* Reorder */
+.reorder-list { margin-top: 8px; }
+.reorder-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 8px;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+  font-size: 13px;
+  cursor: grab;
+  user-select: none;
+}
+.reorder-item:active { cursor: grabbing; }
+.reorder-item .ri-handle { color: var(--text-muted); font-size: 16px; }
+.reorder-item .ri-arrows { margin-left: auto; display: flex; flex-direction: column; gap: 0; }
+.reorder-item .ri-arrows button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 4px;
+  color: var(--text-muted);
+  line-height: 1;
+}
+.reorder-item .ri-arrows button:hover { color: var(--primary); }
+
+/* Confirm Dialog */
+.confirm-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.confirm-overlay.show { display: flex; }
+.confirm-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  animation: popIn 0.3s ease;
+}
+.confirm-box h4 { font-size: 16px; margin-bottom: 8px; }
+.confirm-box p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+.confirm-box .btn-row { display: flex; gap: 10px; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #333;
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 400;
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--primary-lighter); border-radius: 2px; }
+
+/* Toggle switch */
+.toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle-slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: var(--transition);
+}
+.toggle input:checked + .toggle-slider { background: var(--primary); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* Dragging state */
+.reorder-item.dragging { opacity: 0.5; background: var(--primary-lighter); }
+
+/* Reminder Styles */
+.reminder-section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.reminder-section h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+.reminder-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--primary-lighter);
+}
+.reminder-toggle:last-child { border-bottom: none; }
+.reminder-toggle-label { font-size: 14px; }
+.reminder-toggle-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.reminder-interval {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.reminder-interval-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.reminder-interval-btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.reminder-status {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  padding: 8px;
+  background: var(--primary-bg);
+  border-radius: var(--radius-sm);
+}
+
+/* Reminder Modal */
+.reminder-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.reminder-modal-overlay.show { display: flex; }
+.reminder-modal {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  max-width: 320px;
+  width: 90%;
+  text-align: center;
+  animation: popIn 0.3s ease;
+  box-shadow: var(--shadow-lg);
+}
+.reminder-modal .big-icon { font-size: 48px; margin-bottom: 12px; }
+.reminder-modal h3 { font-size: 18px; margin-bottom: 8px; }
+.reminder-modal p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+.reminder-modal .btn-row { display: flex; gap: 10px; }
+
+/* Posture Page Styles */
+.posture-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  padding: 20px;
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+.posture-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.posture-summary {
+  background: rgba(255,255,255,0.2);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.posture-icon { font-size: 18px; }
+.posture-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.posture-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.posture-item-header {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.posture-item-header:hover { background: var(--primary-bg); }
+.posture-item-icon { font-size: 24px; }
+.posture-item-title { flex: 1; font-weight: 600; font-size: 15px; }
+.posture-item-arrow { color: var(--text-muted); font-size: 12px; transition: var(--transition); }
+.posture-item-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 16px; }
+.posture-item.expanded .posture-item-content { max-height: 300px; padding: 0 16px 16px; }
+.posture-keypoint {
+  background: var(--primary-bg);
+  color: var(--primary);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+.posture-detail { color: var(--text-secondary); font-size: 13px; line-height: 1.7; }
+.posture-tips {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-radius: var(--radius);
+  padding: 16px;
+  border-left: 4px solid #ff9800;
+}
+.tips-title { font-weight: 700; color: #e65100; margin-bottom: 10px; font-size: 15px; }
+.tips-content { color: #bf360c; font-size: 13px; line-height: 1.7; }
+.tips-content p { margin-bottom: 8px; }
+.tips-content p:last-child { margin-bottom: 0; }
+
+</style>
+</head>
+<body>
+<div class="app-container" id="app">
+  <!-- Header -->
+  <div class="app-header">
+    <h1><span class="icon">&#128293;</span> 火火第二周康复方案</h1>
+    <div class="date-info" id="headerDate"></div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <div class="nav-item active" data-page="today" onclick="switchPage('today')">今日训练</div>
+    <div class="nav-item" data-page="library" onclick="switchPage('library')">动作库</div>
+    <div class="nav-item" data-page="progress" onclick="switchPage('progress')">进度</div>
+    <div class="nav-item" data-page="posture" onclick="switchPage('posture')">体态</div>
+    <div class="nav-item" data-page="settings" onclick="switchPage('settings')">设置</div>
+  </div>
+
+  <!-- Today Page -->
+  <div class="page active" id="page-today">
+    <div class="streak-banner">
+      <div>
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-label">连续打卡天数</div>
+      </div>
+      <div class="streak-icon">&#128293;</div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-value" id="todayDone">0/9</div>
+        <div class="stat-label">今日完成</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="weekDays">0</div>
+        <div class="stat-label">本周打卡</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="currentStreak">0</div>
+        <div class="stat-label">当前连续</div>
+      </div>
+    </div>
+
+    <div id="todayModules"></div>
+
+    <div class="total-progress">
+      <div class="progress-label">
+        <span>今日总进度</span>
+        <span id="progressText">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="completionMsg" style="display:none" class="completion-msg">
+      <div class="big-emoji">&#127881;</div>
+      <h3>今日康复训练全部完成！</h3>
+      <p>坚持就是胜利，你的身体正在变得更好！</p>
+    </div>
+  </div>
+
+  <!-- Library Page -->
+  <div class="page" id="page-library">
+    <div id="libraryContent"></div>
+  </div>
+
+  <!-- Progress Page -->
+  <div class="page" id="page-progress">
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h3 id="calendarTitle">打卡日历</h3>
+        <div class="calendar-nav">
+          <button onclick="changeMonth(-1)">&#8249;</button>
+          <button onclick="changeMonth(1)">&#8250;</button>
+        </div>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="week-chart-section">
+      <h3>本周完成率</h3>
+      <div class="week-chart" id="weekChart"></div>
+    </div>
+
+    <div class="cumulative-section">
+      <h3>累计统计</h3>
+      <div class="cumulative-grid" id="cumulativeGrid"></div>
+    </div>
+
+    <div class="module-stats-section">
+      <h3>各模块完成率</h3>
+      <div id="moduleStats"></div>
+    </div>
+  </div>
+
+
+  <!-- Posture Page -->
+  <div class="page" id="page-posture">
+    <div class="posture-header">
+      <div class="posture-title">日常颈椎体态管理</div>
+      <div class="posture-summary">
+        <span class="posture-icon">💡</span>
+        <span>头顶悬线 + 鼻尖稍稍上扬 + 肩沉胛收 + 核心收紧</span>
+      </div>
+    </div>
+    <div id="posture-list" class="posture-list"></div>
+    <div class="posture-tips">
+      <div class="tips-title">🎯 核心原则</div>
+      <div class="tips-content">
+        <p><strong>头颈中立位：</strong>耳朵在肩膀正上方，下巴微收，后脑勺向上轻轻延伸。</p>
+        <p>出现脖子前侧发紧、后脑勺胀痛、手指麻木时，立即停止当前姿势，做深呼吸调整。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Page -->
+  <div class="page" id="page-settings">
+      <!-- Reminder Settings -->
+  <div class="reminder-section">
+    <h3>&#128276; 定时提醒</h3>
+    <div class="reminder-toggle">
+      <div>
+        <div class="reminder-toggle-label">开启定时提醒</div>
+        <div class="reminder-toggle-desc">页面可见时提醒您定时活动颈部</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="reminderEnabled" onchange="toggleReminder()">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div id="reminderOptions" style="display:none;">
+      <div class="reminder-toggle">
+        <div>
+          <div class="reminder-toggle-label">提醒间隔</div>
+          <div class="reminder-toggle-desc">选择适合您的活动频率</div>
+        </div>
+      </div>
+      <div class="reminder-interval">
+        <button class="reminder-interval-btn active" id="btn30" onclick="setReminderInterval(30)">30分钟</button>
+        <button class="reminder-interval-btn" id="btn60" onclick="setReminderInterval(60)">60分钟</button>
+      </div>
+      <div class="reminder-toggle" style="margin-top:10px;">
+        <div>
+          <div class="reminder-toggle-label">提示音</div>
+          <div class="reminder-toggle-desc">提醒时播放声音</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="reminderSound" checked onchange="saveReminderSettings()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="reminder-toggle">
+        <div>
+          <div class="reminder-toggle-label">震动</div>
+          <div class="reminder-toggle-desc">提醒时震动（设备支持时）</div>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="reminderVibrate" checked onchange="saveReminderSettings()">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="reminder-status" id="reminderStatus">
+        下次提醒：未开启
+      </div>
+    </div>
+  </div>
+
+<div class="settings-section">
+      <h3>&#11088; 重点动作</h3>
+      <div id="starredList" class="starred-exercise-list"></div>
+    </div>
+
+    <div class="settings-section">
+      <h3>&#128221; 动作顺序调整</h3>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">选择模块后调整动作顺序</p>
+      <div id="reorderModuleSelect" style="margin-bottom:10px;">
+        <select id="reorderSelect" onchange="renderReorderList()" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--card);outline:none;">
+          <option value="0">模块1：深层颈屈肌激活</option>
+          <option value="1">模块2：迷走神经与呼吸调控</option>
+          <option value="2">模块3：枕下肌群减压松解</option>
+          <option value="3">模块4：本体感觉与动眼神经</option>
+          <option value="4">模块5：颈胸联动与抗载荷</option>
+        </select>
+      </div>
+      <div id="reorderList" class="reorder-list"></div>
+    </div>
+
+    <div class="sync-tip-card">
+      <div class="sync-tip-title">跨设备使用</div>
+      <div class="sync-tip-content">
+        <div class="sync-tip-row">Mac → iPhone：导出数据 → AirDrop/微信发送 → iPhone导入</div>
+        <div class="sync-tip-row">iPhone → Mac：导出数据 → AirDrop/微信发送 → Mac导入</div>
+        <div class="sync-tip-row sync-tip-highlight">建议每天训练后导出一次，换设备时导入即可</div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <h3>&#128190; 数据管理</h3>
+      <div class="setting-item">
+        <div>
+          <div class="setting-label">导出数据</div>
+          <div class="setting-desc">将打卡记录导出为JSON文件</div>
+          <div id="lastExportInfo" class="setting-time-info" style="display:none;"></div>
+        </div>
+        <button class="btn btn-secondary" onclick="exportData()" style="flex:none;padding:8px 16px;">导出</button>
+      </div>
+      <div class="setting-item">
+        <div>
+          <div class="setting-label">导入数据</div>
+          <div class="setting-desc">从JSON文件恢复打卡记录</div>
+          <div id="lastImportInfo" class="setting-time-info" style="display:none;"></div>
+        </div>
+        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()" style="flex:none;padding:8px 16px;">导入</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+      <div class="setting-item">
+        <div>
+          <div class="setting-label">重置所有数据</div>
+          <div class="setting-desc">清除所有打卡记录和设置</div>
+        </div>
+        <button class="btn btn-danger" onclick="showConfirm('确定要重置所有数据吗？此操作不可恢复。', resetAllData)" style="flex:none;padding:8px 16px;">重置</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Exercise Detail Modal -->
+<div class="modal-overlay" id="exerciseModal" onclick="closeModalOutside(event)">
+  <div class="modal-sheet" id="modalSheet">
+    <div class="modal-handle"></div>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- Import Modal -->
+<div class="modal-overlay" id="importModal" onclick="if(event.target===this)hideImportModal()">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-content" id="importModalContent"></div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h4 id="confirmTitle">确认</h4>
+    <p id="confirmMsg"></p>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="hideConfirm()">取消</button>
+      <button class="btn btn-danger" id="confirmOk" onclick="confirmAction()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+const EXERCISES_DATA = [
+  {
+    id:'m1e1', module:0, name:'平躺吸舌收下巴', subtitle:'颈深屈肌训练',
+    sets:'维持10秒，10次/组，每日3组', difficulty:'中等',
+    steps:["仰卧，双腿弯曲踩地，头下垫2cm厚书本。", "全舌平铺吸吮在上颚，像壁虎一样贴住。", "视线看脚尖，下巴平行向后缩2毫米（挤出微弱双下巴）。", "后脑勺向书本施加10%最大力量的轻微静力下压。", "维持10秒，缓慢释放。"],
+    tips:'确保脖子前方大筋（胸锁乳突肌）保持柔软。若出现吞咽困难，说明收下巴幅度过大，需减小幅度。'
+  },
+  {
+    id:'m1e2', module:0, name:'坐姿靠墙多向抗阻', subtitle:'颈部多向稳定',
+    sets:'维持6秒/次，每个方向8次，每日2组', difficulty:'中等',
+    steps:["端坐靠墙，视线平视正前方。", "颈部回归中立位，可用双手环抱脑袋后面做一次轻对抗，帮助找到居中感觉。", "手掌平贴额头或侧脸，头颅尝试向前后左右平移，手掌顶住，头在空间维持静止。", "发力控制在10%以内，阻力与推力完美抵消。", "前后左右四个方向各做8次。"],
+    tips:'严禁引发颈部表层大筋肌肉暴起。力量控制在毫厘之间，如果脖子前侧大筋紧绷，说明用力过猛。'
+  },
+  {
+    id:'m2e1', module:1, name:'90/90 墙壁呼吸', subtitle:'副交感神经激活',
+    sets:'慢呼吸8次/组，5组/日', difficulty:'简单',
+    steps:["仰卧，双脚平踩墙面，膝盖和髋关节呈90度。", "鼻子吸气4秒，感受气体填满下背部与腹部。", "嘴唇嘟起，嘴巴极慢长吐气8秒，感受前胸下沉。", "吐完气后屏息3秒。", "体会副交感神经激活带来的全身放松感。"],
+    tips:'吸气时保持胸口与锁骨完全不动，严禁耸肩，仅利用腹部空间进行呼吸。'
+  },
+  {
+    id:'m3e1', module:2, name:'手部定点按压', subtitle:'枕下肌群松解',
+    sets:'按压60秒/点，每个点3次，每日2组', difficulty:'简单',
+    steps:["仰卧，后脑勺平贴床面。", "大拇指尖对准后脑勺底部大筋凹陷处（枕下肌群位置）。", "手指主动用力按压痛点，找到酸胀感明显的位置。", "维持压力的同时进行缓慢的深呼吸。", "每个点按压60秒，重复3次。"],
+    tips:'针对颈椎失稳者，按压过程中保持颈椎中立，严禁转头。按压力度以能感受到酸胀但不过度为宜。'
+  },
+  {
+    id:'m4e1', module:3, name:'站姿双指追踪', subtitle:'前庭眼动协调',
+    sets:'来回追踪为1次，10次/组，3组/日', difficulty:'中等',
+    steps:["站姿，双臂伸直高举双大拇指。", "双眼锁死大拇指指甲盖。", "在头颅完全静止的前提下，眼球用4秒匀速从左拇指横移到右拇指。", "定格1秒后，再用4秒匀速移回左拇指。", "左右来回追踪为1次。"],
+    tips:'若追踪过程中出现视线虚焦或头晕感，缩小双指间距。头颅和鼻子绝不能跟随眼神转动。'
+  },
+  {
+    id:'m5e1', module:4, name:'坐姿锁颈胸椎旋转', subtitle:'胸椎旋转分离',
+    sets:'每侧8次，左右为一组，共3组', difficulty:'中等',
+    steps:["端坐，双手交叉抱住双肩，两肩自然下沉。", "视线锁定正前方一个固定物体，头颈保持完全静止。", "驱动背部，将上背部温和向右旋转至极限。", "在极限位置深吸气撑开肋骨，呼气时尝试再转动2毫米。", "缓慢回正，再向左旋转。"],
+    tips:'严禁头颈跟随躯干转动，确保扭力仅发生在胸椎段。旋转幅度要小，速度要慢。'
+  },
+  {
+    id:'m5e2', module:4, name:'站姿W型推墙', subtitle:'肩胛稳定训练',
+    sets:'12次/组，3组/日', difficulty:'简单',
+    steps:["站姿，背靠墙，双脚离墙一步远。", "双臂呈W型贴墙，手背、手肘、肩膀均接触墙面。", "慢慢向上滑行至Y型，保持肩胛骨紧贴墙面。", "匀速返回W型起始位置。"],
+    tips:'确保背部和头颅始终接触墙面，严禁含胸耸肩。上滑过程中如果肩胛骨离开墙面，说明幅度过大。'
+  },
+  {
+    id:'m5e3', module:4, name:'站姿单侧平衡指尖点击', subtitle:'本体感觉训练',
+    sets:'点击200次/日', difficulty:'中等',
+    steps:["站姿，单脚独立，悬空腿保持平衡。", "悬空侧手臂自然下垂。", "悬空侧大拇指依次点击食指、中指、无名指、小指。", "保持呼吸均匀，避免身体大幅度侧倾。", "左右脚各做200次。"],
+    tips:'动作中保持呼吸均匀，如果无法维持平衡，可靠近墙壁辅助。'
+  },
+  {
+    id:'m5e4', module:4, name:'缩腹前倾起立', subtitle:'核心整合训练',
+    sets:'慢速控制 8次/日', difficulty:'中等',
+    steps:["坐姿，双手叉腰。", "闭唇吸舌，绷紧腹部核心。", "身体整体向前倾45度（头颈不准动，保持与脊柱对齐）。", "依靠大腿力量平稳拔高站起。", "缓慢坐回，重复。"],
+    tips:'起立瞬间严禁通过抬头来借力，全程保持头颈部对齐脊柱。如果站起时头晕，减慢速度。'
+  }
+];
+
+const MODULES = [
+  { name:'深层颈屈肌激活', subtitle:'颈深屈肌', icon:'&#128170;', colorClass:'m1' },
+  { name:'迷走神经与呼吸调控', subtitle:'副交感激活', icon:'&#127808;', colorClass:'m2' },
+  { name:'枕下肌群减压松解', subtitle:'枕下松解', icon:'&#128100;', colorClass:'m3' },
+  { name:'本体感觉与动眼神经', subtitle:'前庭协调', icon:'&#128065;', colorClass:'m4' },
+  { name:'颈胸联动与抗载荷', subtitle:'核心整合', icon:'&#128170;', colorClass:'m5' }
+];
+
+// ==================== STATE ====================
+
+const POSTURE_DATA = {
+  items: [
+    { id: 1, title: "抬头", keyPoint: "胸椎协同头部一起往上抬", detail: "寰枢椎上下活动度只有约10°，其余需要下颈椎段+胸椎协同。颈椎病人下颈椎段常反弓/椎间盘突出，胸椎需代偿更多。", icon: "⬆️" },
+    { id: 2, title: "低头", keyPoint: "收下巴低头，中下颈椎段不动", detail: "把东西推到桌子更远的地方，用眼球向下看。视力不好配眼镜，不要伸头凑近。洗澡时让水往头冲，不要低头让水冲脖子。", icon: "⬇️" },
+    { id: 3, title: "大幅低头场景", keyPoint: "屈髋，后背和脖子一条直线一起低下去", detail: "桌上/床上找东西、洗脸刷牙洗碗等场景。错误：仅低头、弯腰不弯腿。正确：屈髋，脊柱保持中立位整体前倾。", icon: "🔽" },
+    { id: 4, title: "左右转头", keyPoint: "先用眼睛转，再带动头往左右转", detail: "避免直接甩头。先用眼球转向目标方向，再带动头部缓慢转动，给前庭系统适应时间。", icon: "↔️" },
+    { id: 5, title: "看手机", keyPoint: "手机放在锁骨高度，收下巴低头", detail: "不要低头60度看手机。将手机举到锁骨高度，配合收下巴低头的姿势，用眼睛向下看。", icon: "📱" },
+    { id: 6, title: "电脑办公", keyPoint: "字体调大，屏幕和视线持平", detail: "字体调大避免头前倾找字。屏幕上沿与视线平齐，不要过高（会导致上颈段折叠）或过低。", icon: "💻" },
+    { id: 7, title: "大屏办公", keyPoint: "屏幕和视线持平即可", detail: "误区：不要因为之前低头多就把屏幕垫过高。正确：屏幕与视线持平，保持头颈中立位。", icon: "🖥️" },
+    { id: 8, title: "睡觉", keyPoint: "首选仰卧", detail: "首选仰卧位。侧睡通常是一侧肌肉紧张导致，需要配合松解和锻炼恢复平衡。", icon: "🛏️" },
+    { id: 9, title: "起床/躺下", keyPoint: "用手撑起身体，重新调整位置", detail: "避免用头抵着床蹭、脖子发力换位置。正确：用手支撑身体移动，保持头颈中立。", icon: "🔄" },
+    { id: 10, title: "电视/沙发", keyPoint: "后背完全靠住，脖子不悬空", detail: "后背完全靠住靠背，腰部有支撑。半躺时用颈枕支撑颈部，避免脖子悬空。", icon: "🛋️" },
+    { id: 11, title: "日常行走", keyPoint: "头顶悬线 + 鼻尖微扬 + 肩沉胛收 + 核心收紧", detail: "想象头顶有绳子向上提拉，鼻尖略高于水平线（不能多），肩膀下沉肩胛轻收，腹部核心微收紧。", icon: "🚶" }
+  ]
+};
+
+const STORAGE_KEY = 'huohuo_week2';
+const REMINDER_KEY = 'huohuo_week2_reminder';
+const EXPORT_PREFIX = '火火第二周康复数据';
+
+let state = {
+  completedDates: {},
+  starred: [],
+  notes: {},
+  exerciseOrder: {   0: null,   1: null,   2: null,   3: null,   4: null },
+  calendarMonth: new Date().getMonth(),
+  calendarYear: new Date().getFullYear(),
+  lastExportTime: null,
+  lastImportTime: null
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY + '_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      state = { ...state, ...parsed };
+    }
+  } catch(e) { console.error('Failed to load state', e); }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY + '_state', JSON.stringify(state));
+  } catch(e) { console.error('Failed to save state', e); }
+}
+
+// ==================== UTILS ====================
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function getTodayCompleted() {
+  return state.completedDates[todayKey()] || {};
+}
+
+function setTodayCompleted(exId, val) {
+  if (!state.completedDates[todayKey()]) state.completedDates[todayKey()] = {};
+  state.completedDates[todayKey()][exId] = val;
+  saveState();
+}
+
+function getAllExerciseIds() {
+  return EXERCISES_DATA.map(e => e.id);
+}
+
+function getModuleExercises(moduleIdx) {
+  const order = state.exerciseOrder[moduleIdx];
+  const moduleExercises = EXERCISES_DATA.filter(e => e.module === moduleIdx);
+  if (order) {
+    const ordered = [];
+    order.forEach(id => {
+      const found = moduleExercises.find(e => e.id === id);
+      if (found) ordered.push(found);
+    });
+    moduleExercises.forEach(e => {
+      if (!order.includes(e.id)) ordered.push(e);
+    });
+    return ordered;
+  }
+  return moduleExercises;
+}
+
+function formatDate(d) {
+  const days = ['日','一','二','三','四','五','六'];
+  return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 星期${days[d.getDay()]}`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+let confirmCallback = null;
+function showConfirm(msg, cb) {
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmOverlay').classList.add('show');
+  confirmCallback = cb;
+}
+function hideConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  confirmCallback = null;
+}
+function confirmAction() {
+  if (confirmCallback) confirmCallback();
+  hideConfirm();
+}
+
+// ==================== NAVIGATION ====================
+
+function renderPostureList() {
+  const list = document.getElementById('posture-list');
+  if (!list || !window.POSTURE_DATA) return;
+  list.innerHTML = POSTURE_DATA.items.map(item => `
+    <div class="posture-item" data-id="${item.id}">
+      <div class="posture-item-header">
+        <span class="posture-item-icon">${item.icon}</span>
+        <span class="posture-item-title">${item.title}</span>
+        <span class="posture-item-arrow">▼</span>
+      </div>
+      <div class="posture-item-content">
+        <div class="posture-keypoint">${item.keyPoint}</div>
+        <div class="posture-detail">${item.detail}</div>
+      </div>
+    </div>
+  `).join('');
+  list.querySelectorAll('.posture-item-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      item.classList.toggle('expanded');
+      header.querySelector('.posture-item-arrow').textContent = item.classList.contains('expanded') ? '▲' : '▼';
+    });
+  });
+}
+
+function switchPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`.nav-item[data-page="${page}"]`).classList.add('active');
+
+  if (page === 'progress') renderProgress();
+  if (page === 'posture') renderPostureList();
+  if (page === 'settings') renderSettings();
+  if (page === 'library') renderLibrary();
+  if (page === 'today') renderToday();
+}
+
+// ==================== TODAY PAGE ====================
+function renderToday() {
+  document.getElementById('headerDate').textContent = formatDate(new Date());
+
+  const completed = getTodayCompleted();
+  const totalExercises = getAllExerciseIds().length;
+  const doneCount = Object.values(completed).filter(Boolean).length;
+
+  document.getElementById('todayDone').textContent = `${doneCount}/${totalExercises}`;
+  document.getElementById('weekDays').textContent = getWeekCompletedDays();
+  document.getElementById('streakNum').textContent = getCurrentStreak();
+  document.getElementById('currentStreak').textContent = getCurrentStreak();
+
+  const pct = Math.round((doneCount / totalExercises) * 100);
+  document.getElementById('progressText').textContent = `${pct}%`;
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  document.getElementById('completionMsg').style.display = doneCount === totalExercises ? 'block' : 'none';
+
+  const container = document.getElementById('todayModules');
+  container.innerHTML = '';
+
+  MODULES.forEach((mod, mi) => {
+    const exercises = getModuleExercises(mi);
+    const moduleDone = exercises.filter(e => completed[e.id]).length;
+    const moduleTotal = exercises.length;
+    const isComplete = moduleDone === moduleTotal;
+
+    const section = document.createElement('div');
+    section.className = 'module-section';
+    section.innerHTML = `
+      <div class="module-header" onclick="toggleModule(this)">
+        <div class="module-icon ${mod.colorClass}">${mod.icon}</div>
+        <div class="module-title">
+          <h3>${mod.name}</h3>
+          <div class="module-progress">${moduleDone}/${moduleTotal} 已完成</div>
+        </div>
+        ${isComplete ? '<span class="module-complete-badge">&#10003; 已完成</span>' : ''}
+        <span class="module-arrow open">&#9660;</span>
+      </div>
+      <div class="exercise-list">
+        ${exercises.map(ex => {
+          const isDone = !!completed[ex.id];
+          const isStarred = state.starred.includes(ex.id);
+          const hasNote = !!state.notes[ex.id];
+          return `
+            <div class="exercise-item ${isDone ? 'completed' : ''} ${isStarred ? 'starred' : ''}">
+              <div class="exercise-checkbox ${isDone ? 'checked' : ''}" onclick="event.stopPropagation();toggleExercise('${ex.id}')">
+                ${isDone ? '&#10003;' : ''}
+              </div>
+              <div class="exercise-info" onclick="showExerciseDetail('${ex.id}')">
+                <div class="exercise-name">${isStarred ? '&#11088; ' : ''}${ex.name}</div>
+                <div class="exercise-meta">${ex.subtitle} | ${ex.sets}</div>
+              </div>
+              ${hasNote ? '<span class="exercise-note-icon" onclick="event.stopPropagation();showExerciseDetail(\''+ex.id+'\')">&#128221;</span>' : ''}
+              <span class="exercise-star ${isStarred ? 'active' : ''}" onclick="event.stopPropagation();toggleStar('${ex.id}')">${isStarred ? '&#11088;' : '&#9734;'}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    container.appendChild(section);
+  });
+}
+
+function toggleExercise(exId) {
+  const completed = getTodayCompleted();
+  const newVal = !completed[exId];
+  setTodayCompleted(exId, newVal);
+  renderToday();
+  if (newVal) {
+    const doneCount = Object.values(getTodayCompleted()).filter(Boolean).length;
+    if (doneCount === getAllExerciseIds().length) {
+      showToast('恭喜！今日训练全部完成！');
+    }
+  }
+}
+
+function toggleModule(header) {
+  const list = header.nextElementSibling;
+  const arrow = header.querySelector('.module-arrow');
+  if (list.style.display === 'none') {
+    list.style.display = 'block';
+    arrow.classList.add('open');
+  } else {
+    list.style.display = 'none';
+    arrow.classList.remove('open');
+  }
+}
+
+function toggleStar(exId) {
+  const idx = state.starred.indexOf(exId);
+  if (idx >= 0) {
+    state.starred.splice(idx, 1);
+    showToast('已取消重点标记');
+  } else {
+    state.starred.push(exId);
+    showToast('已标记为重点动作');
+  }
+  saveState();
+  renderToday();
+}
+
+// ==================== EXERCISE DETAIL MODAL ====================
+function showExerciseDetail(exId) {
+  const ex = EXERCISES_DATA.find(e => e.id === exId);
+  if (!ex) return;
+  const mod = MODULES[ex.module];
+  const note = state.notes[exId] || '';
+
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-title">${ex.name}</div>
+    <span class="modal-module-tag ${mod.colorClass}">${mod.icon} ${mod.name}</span>
+    <div class="modal-meta-row">
+      <div class="modal-meta-item">&#128336; ${ex.sets}</div>
+      <div class="modal-meta-item">&#127919; 难度：${ex.difficulty}</div>
+      <div class="modal-meta-item">&#128204; ${ex.subtitle}</div>
+    </div>
+
+    <div class="modal-section-title">&#128221; 详细步骤</div>
+    <ol class="modal-steps">
+      ${ex.steps.map(s => `<li>${s}</li>`).join('')}
+    </ol>
+
+    <div class="modal-section-title">&#9888;&#65039; 温馨提示</div>
+    <div class="modal-tips">${ex.tips}</div>
+
+    <div class="modal-note-area">
+      <div class="modal-section-title">&#128221; 个人笔记</div>
+      <textarea id="noteInput" placeholder="记录你的训练感受、注意事项...">${note}</textarea>
+      <div class="modal-btn-row">
+        <button class="btn btn-secondary" onclick="closeModal()">关闭</button>
+        <button class="btn btn-primary" onclick="saveNote('${exId}')">保存笔记</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('exerciseModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('exerciseModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('exerciseModal')) {
+    closeModal();
+  }
+}
+
+function saveNote(exId) {
+  const note = document.getElementById('noteInput').value;
+  state.notes[exId] = note;
+  saveState();
+  showToast('笔记已保存');
+  renderToday();
+}
+
+// ==================== LIBRARY PAGE ====================
+function renderLibrary() {
+  const container = document.getElementById('libraryContent');
+  container.innerHTML = '';
+
+  MODULES.forEach((mod, mi) => {
+    const exercises = getModuleExercises(mi);
+    const section = document.createElement('div');
+    section.className = 'library-module';
+    section.innerHTML = `
+      <div class="library-module-title">
+        <span class="module-icon ${mod.colorClass}" style="width:28px;height:28px;font-size:14px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;">${mod.icon}</span>
+        ${mod.name}（${mod.subtitle}）
+      </div>
+      ${exercises.map((ex, idx) => {
+        const isStarred = state.starred.includes(ex.id);
+        return `
+          <div class="library-exercise" onclick="showExerciseDetail('${ex.id}')">
+            <div class="le-num">${idx + 1}</div>
+            <div class="le-info">
+              <div class="le-name">${isStarred ? '&#11088; ' : ''}${ex.name}</div>
+              <div class="le-meta">${ex.subtitle} | ${ex.sets} | ${ex.difficulty}</div>
+            </div>
+            <span class="le-star ${isStarred ? 'active' : ''}" onclick="event.stopPropagation();toggleStarLib('${ex.id}')">${isStarred ? '&#11088;' : '&#9734;'}</span>
+          </div>
+        `;
+      }).join('')}
+    `;
+    container.appendChild(section);
+  });
+}
+
+function toggleStarLib(exId) {
+  const idx = state.starred.indexOf(exId);
+  if (idx >= 0) {
+    state.starred.splice(idx, 1);
+  } else {
+    state.starred.push(exId);
+  }
+  saveState();
+  renderLibrary();
+}
+
+// ==================== PROGRESS PAGE ====================
+function getWeekCompletedDays() {
+  const now = new Date();
+  const dayOfWeek = now.getDay() || 7;
+  let count = 0;
+  for (let i = 1; i <= dayOfWeek; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - dayOfWeek + i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const data = state.completedDates[key];
+    if (data) {
+      const done = Object.values(data).filter(Boolean).length;
+      if (done > 0) count++;
+    }
+  }
+  return count;
+}
+
+function getCurrentStreak() {
+  let streak = 0;
+  const d = new Date();
+  const todayData = state.completedDates[todayKey()];
+  const todayDone = todayData ? Object.values(todayData).filter(Boolean).length : 0;
+
+  if (todayDone === 0) {
+    d.setDate(d.getDate() - 1);
+  }
+
+  while (true) {
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const data = state.completedDates[key];
+    if (data) {
+      const done = Object.values(data).filter(Boolean).length;
+      if (done > 0) {
+        streak++;
+        d.setDate(d.getDate() - 1);
+      } else {
+        break;
+      }
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function getLongestStreak() {
+  const dates = Object.keys(state.completedDates).sort();
+  if (dates.length === 0) return 0;
+
+  let longest = 0, current = 0;
+  let prevDate = null;
+
+  dates.forEach(dateStr => {
+    const data = state.completedDates[dateStr];
+    const done = Object.values(data).filter(Boolean).length;
+    if (done === 0) return;
+
+    if (prevDate === null) {
+      current = 1;
+    } else {
+      const prev = new Date(prevDate);
+      const curr = new Date(dateStr);
+      const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+      if (diff === 1) {
+        current++;
+      } else {
+        longest = Math.max(longest, current);
+        current = 1;
+      }
+    }
+    longest = Math.max(longest, current);
+    prevDate = dateStr;
+  });
+
+  return longest;
+}
+
+function getTotalDays() {
+  return Object.keys(state.completedDates).filter(k => {
+    const done = Object.values(state.completedDates[k]).filter(Boolean).length;
+    return done > 0;
+  }).length;
+}
+
+function getTotalExercises() {
+  let total = 0;
+  Object.values(state.completedDates).forEach(data => {
+    total += Object.values(data).filter(Boolean).length;
+  });
+  return total;
+}
+
+function renderProgress() {
+  renderCalendar();
+  renderWeekChart();
+  renderCumulative();
+  renderModuleStats();
+}
+
+function renderCalendar() {
+  const year = state.calendarYear;
+  const month = state.calendarMonth;
+  document.getElementById('calendarTitle').textContent = `${year}年${month + 1}月`;
+
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  const dayLabels = ['一','二','三','四','五','六','日'];
+  dayLabels.forEach(l => {
+    const el = document.createElement('div');
+    el.className = 'calendar-day-label';
+    el.textContent = l;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(year, month, 1);
+  let startDay = firstDay.getDay() || 7;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const totalExercises = getAllExerciseIds().length;
+
+  for (let i = 1; i < startDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'calendar-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dateObj = new Date(year, month, d);
+    const isToday = dateObj.toDateString() === today.toDateString();
+    const isFuture = dateObj > today;
+
+    let cls = 'calendar-day';
+    if (isToday) cls += ' today';
+
+    if (isFuture) {
+      cls += ' future';
+    } else {
+      const data = state.completedDates[dateStr];
+      if (data) {
+        const done = Object.values(data).filter(Boolean).length;
+        if (done === totalExercises) {
+          cls += ' complete';
+        } else if (done > 0) {
+          cls += ' partial';
+        } else {
+          cls += ' past-empty';
+        }
+      } else if (dateObj < today) {
+        cls += ' past-empty';
+      }
+    }
+
+    el.className = cls;
+    el.textContent = d;
+    grid.appendChild(el);
+  }
+}
+
+function changeMonth(delta) {
+  state.calendarMonth += delta;
+  if (state.calendarMonth > 11) { state.calendarMonth = 0; state.calendarYear++; }
+  if (state.calendarMonth < 0) { state.calendarMonth = 11; state.calendarYear--; }
+  renderCalendar();
+}
+
+function renderWeekChart() {
+  const container = document.getElementById('weekChart');
+  container.innerHTML = '';
+
+  const now = new Date();
+  const dayOfWeek = now.getDay() || 7;
+  const dayNames = ['一','二','三','四','五','六','日'];
+  const totalExercises = getAllExerciseIds().length;
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - dayOfWeek + 1 + i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const data = state.completedDates[key];
+    const done = data ? Object.values(data).filter(Boolean).length : 0;
+    const pct = Math.round((done / totalExercises) * 100);
+    const isFuture = d > now;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'week-bar-wrap';
+    wrap.innerHTML = `
+      <div class="week-bar-value">${isFuture ? '-' : pct + '%'}</div>
+      <div class="week-bar ${done > 0 ? 'filled' : ''}" style="height:${isFuture ? 4 : Math.max(4, pct)}px"></div>
+      <div class="week-bar-label">${dayNames[i]}</div>
+    `;
+    container.appendChild(wrap);
+  }
+}
+
+function renderCumulative() {
+  const grid = document.getElementById('cumulativeGrid');
+  grid.innerHTML = `
+    <div class="cumulative-item">
+      <div class="ci-value">${getTotalDays()}</div>
+      <div class="ci-label">总打卡天数</div>
+    </div>
+    <div class="cumulative-item">
+      <div class="ci-value">${getTotalExercises()}</div>
+      <div class="ci-label">总完成动作数</div>
+    </div>
+    <div class="cumulative-item">
+      <div class="ci-value">${getLongestStreak()}</div>
+      <div class="ci-label">最长连续天数</div>
+    </div>
+    <div class="cumulative-item">
+      <div class="ci-value">${getCurrentStreak()}</div>
+      <div class="ci-label">当前连续天数</div>
+    </div>
+  `;
+}
+
+function renderModuleStats() {
+  const container = document.getElementById('moduleStats');
+  container.innerHTML = '';
+
+  const allDates = Object.keys(state.completedDates);
+
+  MODULES.forEach((mod, mi) => {
+    const moduleExIds = EXERCISES_DATA.filter(e => e.module === mi).map(e => e.id);
+    let totalDone = 0;
+    let totalPossible = 0;
+
+    allDates.forEach(dateStr => {
+      const data = state.completedDates[dateStr];
+      if (data) {
+        moduleExIds.forEach(id => {
+          totalPossible++;
+          if (data[id]) totalDone++;
+        });
+      }
+    });
+
+    const pct = totalPossible > 0 ? Math.round((totalDone / totalPossible) * 100) : 0;
+
+    const item = document.createElement('div');
+    item.className = 'module-stat-item';
+    item.innerHTML = `
+      <div class="module-stat-header">
+        <span class="ms-name">${mod.icon} ${mod.name}</span>
+        <span class="ms-pct">${pct}%</span>
+      </div>
+      <div class="module-stat-bar">
+        <div class="module-stat-fill ${mod.colorClass}" style="width:${pct}%"></div>
+      </div>
+    `;
+    container.appendChild(item);
+  });
+}
+
+// ==================== SETTINGS PAGE ====================
+function renderSettings() {
+  const starredList = document.getElementById('starredList');
+  if (state.starred.length === 0) {
+    starredList.innerHTML = '<div class="no-starred">暂无重点动作，在训练清单中点击星标即可添加</div>';
+  } else {
+    starredList.innerHTML = state.starred.map(id => {
+      const ex = EXERCISES_DATA.find(e => e.id === id);
+      if (!ex) return '';
+      return `
+        <div class="starred-exercise-item">
+          <span class="se-star">&#11088;</span>
+          <span style="flex:1">${ex.name}</span>
+          <span style="font-size:12px;color:var(--text-muted)">${ex.subtitle}</span>
+          <button class="btn btn-danger" style="padding:4px 10px;font-size:12px;flex:none;" onclick="removeStar('${id}')">移除</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  renderReorderList();
+}
+
+function removeStar(id) {
+  state.starred = state.starred.filter(s => s !== id);
+  saveState();
+  renderSettings();
+  showToast('已移除重点标记');
+}
+
+function renderReorderList() {
+  const mi = parseInt(document.getElementById('reorderSelect').value);
+  const exercises = getModuleExercises(mi);
+  const container = document.getElementById('reorderList');
+
+  container.innerHTML = exercises.map((ex, idx) => `
+    <div class="reorder-item" data-id="${ex.id}">
+      <span class="ri-handle">&#9776;</span>
+      <span style="flex:1">${idx + 1}. ${ex.name}</span>
+      <div class="ri-arrows">
+        <button onclick="moveExercise(${mi}, ${idx}, -1)" ${idx === 0 ? 'disabled style="opacity:0.3"' : ''}>&#9650;</button>
+        <button onclick="moveExercise(${mi}, ${idx}, 1)" ${idx === exercises.length - 1 ? 'disabled style="opacity:0.3"' : ''}>&#9660;</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function moveExercise(moduleIdx, fromIdx, direction) {
+  const exercises = getModuleExercises(moduleIdx);
+  const toIdx = fromIdx + direction;
+  if (toIdx < 0 || toIdx >= exercises.length) return;
+
+  const order = exercises.map(e => e.id);
+  [order[fromIdx], order[toIdx]] = [order[toIdx], order[fromIdx]];
+  state.exerciseOrder[moduleIdx] = order;
+  saveState();
+  renderReorderList();
+}
+
+// ==================== DATA MANAGEMENT ====================
+function countTotalDays(cd) {
+  return Object.keys(cd || {}).length;
+}
+function countTotalExercises(cd) {
+  let total = 0;
+  for (const date in (cd || {})) {
+    total += Object.keys(cd[date]).length;
+  }
+  return total;
+}
+
+function buildDefaultOrder() {
+  const order = {};
+  MODULES.forEach((mod, mi) => { order[mi] = null; });
+  return order;
+}
+
+function exportData() {
+  const exportPayload = {
+    _meta: {
+      exportVersion: '1.0',
+      exportDate: new Date().toISOString(),
+      deviceInfo: navigator.userAgent,
+      totalDays: countTotalDays(state.completedDates),
+      totalExercises: countTotalExercises(state.completedDates)
+    },
+    completedDates: state.completedDates,
+    starred: state.starred,
+    notes: state.notes,
+    exerciseOrder: state.exerciseOrder
+  };
+  const data = JSON.stringify(exportPayload, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const d = new Date();
+  const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  a.download = `${EXPORT_PREFIX}_${dateStr}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  state.lastExportTime = new Date().toISOString();
+  saveState();
+  updateDataManagementInfo();
+  showToast('数据已导出');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const rawData = JSON.parse(e.target.result);
+      let importPayload;
+      if (rawData._meta) {
+        importPayload = rawData;
+      } else {
+        importPayload = {
+          _meta: {
+            exportVersion: '0.x',
+            exportDate: null,
+            deviceInfo: null,
+            totalDays: countTotalDays(rawData.completedDates || rawData),
+            totalExercises: countTotalExercises(rawData.completedDates || rawData)
+          },
+          completedDates: rawData.completedDates || rawData,
+          starred: rawData.starred || [],
+          notes: rawData.notes || {},
+          exerciseOrder: rawData.exerciseOrder || buildDefaultOrder()
+        };
+      }
+      showImportModal(importPayload);
+    } catch(err) {
+      showToast('导入失败：文件格式错误');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+function showImportModal(importPayload) {
+  const meta = importPayload._meta;
+  const localDays = countTotalDays(state.completedDates);
+  const localExercises = countTotalExercises(state.completedDates);
+  const importDays = meta.totalDays;
+  const importExercises = meta.totalExercises;
+
+  let exportDateStr = '未知';
+  if (meta.exportDate) {
+    const ed = new Date(meta.exportDate);
+    exportDateStr = `${ed.getFullYear()}-${String(ed.getMonth()+1).padStart(2,'0')}-${ed.getDate()} ${String(ed.getHours()).padStart(2,'0')}:${String(ed.getMinutes()).padStart(2,'0')}`;
+  }
+  let deviceStr = '未知';
+  if (meta.deviceInfo) {
+    const ua = meta.deviceInfo;
+    if (ua.includes('iPhone') || ua.includes('iPad')) deviceStr = 'iOS 设备';
+    else if (ua.includes('Macintosh')) deviceStr = 'Mac';
+    else if (ua.includes('Android')) deviceStr = 'Android 设备';
+    else if (ua.includes('Windows')) deviceStr = 'Windows 设备';
+    else deviceStr = ua.substring(0, 40) + '...';
+  }
+
+  const html = `
+    <div style="padding:20px 0;">
+      <h4 style="font-size:16px;font-weight:600;margin-bottom:16px;">导入数据预览</h4>
+      <div style="background:var(--primary-bg);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;">
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">来源信息</div>
+        <div style="font-size:14px;">导出时间：${exportDateStr}</div>
+        <div style="font-size:14px;">设备：${deviceStr}</div>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:16px;">
+        <div style="flex:1;background:#fff3e0;border-radius:var(--radius-sm);padding:12px;text-align:center;">
+          <div style="font-size:12px;color:#e65100;margin-bottom:4px;">导入文件</div>
+          <div style="font-size:20px;font-weight:700;color:#e65100;">${importDays}</div>
+          <div style="font-size:11px;color:#e65100;">打卡天数</div>
+          <div style="font-size:16px;font-weight:600;color:#e65100;margin-top:4px;">${importExercises}</div>
+          <div style="font-size:11px;color:#e65100;">完成动作</div>
+        </div>
+        <div style="flex:1;background:var(--primary-bg);border-radius:var(--radius-sm);padding:12px;text-align:center;">
+          <div style="font-size:12px;color:var(--primary);margin-bottom:4px;">本地数据</div>
+          <div style="font-size:20px;font-weight:700;color:var(--primary);">${localDays}</div>
+          <div style="font-size:11px;color:var(--primary);">打卡天数</div>
+          <div style="font-size:16px;font-weight:600;color:var(--primary);margin-top:4px;">${localExercises}</div>
+          <div style="font-size:11px;color:var(--primary);">完成动作</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="doImportMerge()" style="flex:1;">合并数据（推荐）</button>
+        <button class="btn btn-danger" onclick="doImportOverwrite()" style="flex:1;">覆盖本地</button>
+      </div>
+      <button class="btn btn-secondary" onclick="hideImportModal()" style="width:100%;margin-top:10px;">取消</button>
+    </div>
+  `;
+
+  document.getElementById('importModalContent').innerHTML = html;
+  document.getElementById('importModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  window._pendingImportData = importPayload;
+}
+
+function hideImportModal() {
+  document.getElementById('importModal').classList.remove('show');
+  document.body.style.overflow = '';
+  window._pendingImportData = null;
+}
+
+function doImportMerge() {
+  const payload = window._pendingImportData;
+  if (!payload) return;
+
+  const mergedCompleted = { ...state.completedDates };
+  for (const date in payload.completedDates) {
+    mergedCompleted[date] = payload.completedDates[date];
+  }
+  const mergedStarred = [...new Set([...state.starred, ...payload.starred])];
+  const mergedNotes = { ...state.notes };
+  for (const key in payload.notes) {
+    mergedNotes[key] = payload.notes[key];
+  }
+  const mergedOrder = { ...state.exerciseOrder };
+  if (payload.exerciseOrder) {
+    for (const mod in payload.exerciseOrder) {
+      if (payload.exerciseOrder[mod] !== null) {
+        mergedOrder[mod] = payload.exerciseOrder[mod];
+      }
+    }
+  }
+
+  state.completedDates = mergedCompleted;
+  state.starred = mergedStarred;
+  state.notes = mergedNotes;
+  state.exerciseOrder = mergedOrder;
+  state.lastImportTime = new Date().toISOString();
+  saveState();
+  hideImportModal();
+  updateDataManagementInfo();
+  showToast('数据合并成功');
+  renderToday();
+}
+
+function doImportOverwrite() {
+  const payload = window._pendingImportData;
+  if (!payload) return;
+
+  state.completedDates = payload.completedDates || {};
+  state.starred = payload.starred || [];
+  state.notes = payload.notes || {};
+  state.exerciseOrder = payload.exerciseOrder || buildDefaultOrder();
+  state.lastImportTime = new Date().toISOString();
+  saveState();
+  hideImportModal();
+  updateDataManagementInfo();
+  showToast('数据已覆盖');
+  renderToday();
+}
+
+function formatTimeStr(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+}
+
+function updateDataManagementInfo() {
+  const exportInfo = document.getElementById('lastExportInfo');
+  const importInfo = document.getElementById('lastImportInfo');
+  if (exportInfo) {
+    if (state.lastExportTime) {
+      exportInfo.textContent = '上次导出：' + formatTimeStr(state.lastExportTime);
+      exportInfo.style.display = 'block';
+    } else {
+      exportInfo.style.display = 'none';
+    }
+  }
+  if (importInfo) {
+    if (state.lastImportTime) {
+      importInfo.textContent = '上次导入：' + formatTimeStr(state.lastImportTime);
+      importInfo.style.display = 'block';
+    } else {
+      importInfo.style.display = 'none';
+    }
+  }
+}
+
+function resetAllData() {
+  localStorage.removeItem(STORAGE_KEY + '_state');
+  state = {
+    completedDates: {},
+    starred: [],
+    notes: {},
+    exerciseOrder: buildDefaultOrder(),
+    calendarMonth: new Date().getMonth(),
+    calendarYear: new Date().getFullYear(),
+    lastExportTime: null,
+    lastImportTime: null
+  };
+  saveState();
+  updateDataManagementInfo();
+  showToast('数据已重置');
+  renderToday();
+}
+
+
+// ==================== REMINDER ====================
+let reminderState = {
+  enabled: false,
+  interval: 30,
+  sound: true,
+  vibrate: true,
+  nextReminderTime: null,
+  missedCount: 0
+};
+let reminderTimer = null;
+let snoozeTimer = null;
+
+function loadReminderState() {
+  try {
+    const saved = localStorage.getItem(REMINDER_KEY + '_state');
+    if (saved) {
+      reminderState = { ...reminderState, ...JSON.parse(saved) };
+    }
+  } catch(e) {}
+  updateReminderUI();
+}
+
+function saveReminderSettings() {
+  reminderState.sound = document.getElementById('reminderSound').checked;
+  reminderState.vibrate = document.getElementById('reminderVibrate').checked;
+  localStorage.setItem(REMINDER_KEY + '_state', JSON.stringify(reminderState));
+  updateReminderStatus();
+}
+
+function toggleReminder() {
+  const enabled = document.getElementById('reminderEnabled').checked;
+  reminderState.enabled = enabled;
+  document.getElementById('reminderOptions').style.display = enabled ? 'block' : 'none';
+
+  if (enabled) {
+    startReminderTimer();
+  } else {
+    stopReminderTimer();
+  }
+
+  localStorage.setItem(REMINDER_KEY + '_state', JSON.stringify(reminderState));
+  updateReminderStatus();
+}
+
+function setReminderInterval(minutes) {
+  reminderState.interval = minutes;
+  document.getElementById('btn30').classList.toggle('active', minutes === 30);
+  document.getElementById('btn60').classList.toggle('active', minutes === 60);
+
+  if (reminderState.enabled) {
+    startReminderTimer();
+  }
+
+  localStorage.setItem(REMINDER_KEY + '_state', JSON.stringify(reminderState));
+  updateReminderStatus();
+}
+
+function startReminderTimer() {
+  stopReminderTimer();
+
+  const ms = reminderState.interval * 60 * 1000;
+  reminderState.nextReminderTime = Date.now() + ms;
+
+  reminderTimer = setTimeout(() => {
+    triggerReminder();
+  }, ms);
+
+  updateReminderStatus();
+}
+
+function stopReminderTimer() {
+  if (reminderTimer) {
+    clearTimeout(reminderTimer);
+    reminderTimer = null;
+  }
+  if (snoozeTimer) {
+    clearTimeout(snoozeTimer);
+    snoozeTimer = null;
+  }
+}
+
+function triggerReminder() {
+  if (!reminderState.enabled) return;
+
+  if (document.visibilityState === 'visible') {
+    showReminderModal();
+    if (reminderState.sound) playReminderSound();
+    if (reminderState.vibrate && navigator.vibrate) {
+      navigator.vibrate([200, 100, 200]);
+    }
+  } else {
+    reminderState.missedCount++;
+    localStorage.setItem(REMINDER_KEY + '_state', JSON.stringify(reminderState));
+  }
+
+  if (reminderState.enabled) {
+    startReminderTimer();
+  }
+}
+
+function showReminderModal() {
+  const modal = document.getElementById('reminderModal');
+  const text = document.getElementById('reminderModalText');
+  text.textContent = `已经坐了${reminderState.interval}分钟，起来活动一下吧！`;
+  modal.classList.add('show');
+}
+
+function closeReminderModal() {
+  document.getElementById('reminderModal').classList.remove('show');
+}
+
+function snoozeReminder() {
+  closeReminderModal();
+
+  snoozeTimer = setTimeout(() => {
+    if (reminderState.enabled) {
+      showReminderModal();
+      if (reminderState.sound) playReminderSound();
+      if (reminderState.vibrate && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+    }
+  }, 5 * 60 * 1000);
+
+  showToast('5分钟后再次提醒');
+}
+
+function startExerciseFromReminder() {
+  closeReminderModal();
+  switchPage('today');
+}
+
+function playReminderSound() {
+  try {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.value = 800;
+    oscillator.type = 'sine';
+
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  } catch(e) {}
+}
+
+function updateReminderUI() {
+  document.getElementById('reminderEnabled').checked = reminderState.enabled;
+  document.getElementById('reminderOptions').style.display = reminderState.enabled ? 'block' : 'none';
+  document.getElementById('reminderSound').checked = reminderState.sound;
+  document.getElementById('reminderVibrate').checked = reminderState.vibrate;
+
+  document.getElementById('btn30').classList.toggle('active', reminderState.interval === 30);
+  document.getElementById('btn60').classList.toggle('active', reminderState.interval === 60);
+
+  if (reminderState.enabled) {
+    startReminderTimer();
+  }
+}
+
+function updateReminderStatus() {
+  const statusEl = document.getElementById('reminderStatus');
+  if (!reminderState.enabled) {
+    statusEl.textContent = '下次提醒：未开启';
+  } else if (reminderState.nextReminderTime) {
+    const nextTime = new Date(reminderState.nextReminderTime);
+    const timeStr = `${nextTime.getHours()}:${String(nextTime.getMinutes()).padStart(2,'0')}`;
+    statusEl.textContent = `下次提醒：${timeStr}`;
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && reminderState.missedCount > 0) {
+    showToast(`您有${reminderState.missedCount}次错过的提醒`);
+    reminderState.missedCount = 0;
+    localStorage.setItem(REMINDER_KEY + '_state', JSON.stringify(reminderState));
+  }
+});
+
+function initReminder() {
+  loadReminderState();
+}
+
+// ==================== INIT ====================
+function init() {
+  loadState();
+  initReminder();
+  renderToday();
+  updateDataManagementInfo();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+
+<!-- Reminder Modal -->
+<div class="reminder-modal-overlay" id="reminderModal" onclick="if(event.target===this)closeReminderModal()">
+  <div class="reminder-modal">
+    <div class="big-icon">&#128276;</div>
+    <h3>该活动颈部了！</h3>
+    <p id="reminderModalText">已经坐了30分钟，起来活动一下吧</p>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="snoozeReminder()">稍后(5分)</button>
+      <button class="btn btn-primary" onclick="startExerciseFromReminder()">开始训练</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
