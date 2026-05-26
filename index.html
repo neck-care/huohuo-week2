@@ -6,22 +6,22 @@
 <title>火火第二周康复方案</title>
 <style>
 :root {
-  --primary: #e53935;
-  --primary-light: #ff5252;
-  --primary-lighter: #ffcdd2;
-  --primary-bg: #ffebee;
-  --accent: #ff9800;
-  --accent-light: #ffe0b2;
-  --danger: #ef5350;
+  --primary: #ef6c00;
+  --primary-light: #ff9800;
+  --primary-lighter: #ffe0b2;
+  --primary-bg: #fff3e0;
+  --accent: #FF9800;
+  --accent-light: #FFE0B2;
+  --danger: #f44336;
   --danger-light: #ffcdd2;
-  --text: #c62828;
-  --text-secondary: #d32f2f;
-  --text-muted: #e57373;
-  --bg: #fce4ec;
+  --text: #e65100;
+  --text-secondary: #ef6c00;
+  --text-muted: #ff9800;
+  --bg: #fff3e0;
   --card: #ffffff;
-  --border: #ffcdd2;
-  --shadow: 0 2px 8px rgba(229,57,53,0.1);
-  --shadow-lg: 0 4px 16px rgba(229,57,53,0.15);
+  --border: #ffe0b2;
+  --shadow: rgba(239,108,0,0.1);
+  --shadow-lg: rgba(239,108,0,0.15);
   --radius: 12px;
   --radius-sm: 8px;
   --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
@@ -929,6 +929,34 @@ body {
 }
 .posture-icon { font-size: 18px; }
 .posture-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+
+/* Muscle Release Page Styles */
+.release-intro-card {
+  background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 16px;
+  border: 1px solid #ffcc80;
+}
+.release-intro-card h3 { font-size: 17px; color: #e65100; margin-bottom: 10px; }
+.release-intro-card p { font-size: 14px; line-height: 1.7; color: var(--text); margin-bottom: 8px; }
+.release-tip-text { background: rgba(255,255,255,0.7); padding: 10px 12px; border-radius: var(--radius-sm); border-left: 4px solid #ff9800; font-size: 13px !important; color: #bf360c !important; }
+.release-section { background: var(--card); border-radius: var(--radius); margin-bottom: 14px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--border); }
+.release-section-header { background: linear-gradient(135deg, #fff8e1, #ffecb3); padding: 14px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; transition: var(--transition); }
+.release-section-header:hover { background: linear-gradient(135deg, #ffecb3, #ffe082); }
+.release-section-header h4 { font-size: 15px; color: #f57f17; font-weight: 600; display: flex; align-items: center; gap: 8px; flex:1; }
+.release-section-header .rs-arrow { font-size: 12px; color: #f57f17; transition: transform 0.3s ease; }
+.release-section-header.expanded .rs-arrow { transform: rotate(180deg); }
+.release-item-body { display: none; padding: 14px 16px; border-top: 1px solid var(--border); }
+.release-item-body.open { display: block; }
+.release-symptom { background: #ffebee; color: #c62828; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 12px; border-left: 3px solid #ef5350; }
+.release-find { font-size: 13px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--border); }
+.release-find strong { color: var(--primary); }
+.release-method { font-size: 13px; line-height: 1.7; color: var(--text-secondary); padding: 10px; background: #f9fbe7; border-radius: var(--radius-sm); border-left: 3px solid #8bc34a; }
+.release-method strong { color: #558b2f; }
+.posture-error { background: #ffebee; color: #c62828; padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 8px; font-size: 12px; border-left: 3px solid #ef5350; }
+.posture-correct { background: #e8f5e9; color: #2e7d32; padding: 8px 12px; border-radius: var(--radius-sm); margin-top: 6px; font-size: 12px; border-left: 3px solid #66bb6a; }
+
 .posture-item {
   background: var(--card);
   border-radius: var(--radius);
@@ -977,14 +1005,14 @@ body {
 <div class="app-container" id="app">
   <!-- Header -->
   <div class="app-header">
-    <h1><span class="icon">&#128293;</span> 火火第二周康复方案</h1>
+    <h1><span class="icon">&#128131;</span> 火火第二周康复方案</h1>
     <div class="date-info" id="headerDate"></div>
   </div>
 
   <!-- Navigation -->
   <div class="nav-bar">
     <div class="nav-item active" data-page="today" onclick="switchPage('today')">今日训练</div>
-    <div class="nav-item" data-page="library" onclick="switchPage('library')">动作库</div>
+    <div class="nav-item" data-page="release" onclick="switchPage('release')">肌肉松解</div>
     <div class="nav-item" data-page="progress" onclick="switchPage('progress')">进度</div>
     <div class="nav-item" data-page="posture" onclick="switchPage('posture')">体态</div>
     <div class="nav-item" data-page="settings" onclick="switchPage('settings')">设置</div>
@@ -997,7 +1025,7 @@ body {
         <div class="streak-num" id="streakNum">0</div>
         <div class="streak-label">连续打卡天数</div>
       </div>
-      <div class="streak-icon">&#128293;</div>
+      <div class="streak-icon">&#128150;</div>
     </div>
 
     <div class="stats-row">
@@ -1034,9 +1062,14 @@ body {
     </div>
   </div>
 
-  <!-- Library Page -->
-  <div class="page" id="page-library">
-    <div id="libraryContent"></div>
+  <!-- Muscle Release Page -->
+  <div class="page" id="page-release">
+    <div class="release-intro-card">
+      <h3>为什么先松解？</h3>
+      <p>酸痛的肌肉往往是「受害者」，真正缩短僵硬的往往是它的反方向肌肉。比如后背和脖子酸痛，首要松解的是前侧的胸大肌和斜角肌。</p>
+      <p class="release-tip-text">安全的松解只是清除了身体的「路障」，松解完毕后配合背部力量激活，才能恢复舒适。</p>
+    </div>
+    <div id="releaseContent"></div>
   </div>
 
   <!-- Progress Page -->
@@ -1082,7 +1115,7 @@ body {
     <div class="posture-tips">
       <div class="tips-title">🎯 核心原则</div>
       <div class="tips-content">
-        <p><strong>头颈中立位：</strong>耳朵在肩膀正上方，下巴微收，后脑勺向上轻轻延伸。</p>
+        <p><strong>头颈中立位：</strong>耳朵在肩膀正上方，下巴微收（为了不让上颈椎折叠），鼻尖稍上扬（保持生理曲线），后脑勺向上轻轻延伸。</p>
         <p>出现脖子前侧发紧、后脑勺胀痛、手指麻木时，立即停止当前姿势，做深呼吸调整。</p>
       </div>
     </div>
@@ -1150,11 +1183,11 @@ body {
       <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">选择模块后调整动作顺序</p>
       <div id="reorderModuleSelect" style="margin-bottom:10px;">
         <select id="reorderSelect" onchange="renderReorderList()" style="width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;background:var(--card);outline:none;">
-          <option value="0">模块1：深层颈屈肌激活</option>
-          <option value="1">模块2：迷走神经与呼吸调控</option>
-          <option value="2">模块3：枕下肌群减压松解</option>
-          <option value="3">模块4：本体感觉与动眼神经</option>
-          <option value="4">模块5：颈胸联动与抗载荷</option>
+          <option value="0">模块1：呼吸与自律神经安抚</option>
+          <option value="1">模块2：神经安全滑动减压</option>
+          <option value="2">模块3：颈椎深层加固</option>
+          <option value="3">模块4：体态纠正与支架重塑</option>
+          <option value="4">模块5：前庭与平衡重塑</option>
         </select>
       </div>
       <div id="reorderList" class="reorder-list"></div>
@@ -1234,89 +1267,158 @@ body {
 // ==================== DATA ====================
 const EXERCISES_DATA = [
   {
-    id:'m1e1', module:0, name:'平躺吸舌收下巴', subtitle:'颈深屈肌训练',
-    sets:'维持10秒，10次/组，每日3组', difficulty:'中等',
-    steps:["仰卧，双腿弯曲踩地，头下垫2cm厚书本。", "全舌平铺吸吮在上颚，像壁虎一样贴住。", "视线看脚尖，下巴平行向后缩2毫米（挤出微弱双下巴）。", "后脑勺向书本施加10%最大力量的轻微静力下压。", "维持10秒，缓慢释放。"],
-    tips:'确保脖子前方大筋（胸锁乳突肌）保持柔软。若出现吞咽困难，说明收下巴幅度过大，需减小幅度。'
+    id:'A039', module:0, name:'缩腹前倾起立', subtitle:'坐姿→站姿',
+    sets:'1组×8次', difficulty:'中等',
+    steps:['坐姿，双手叉腰。','闭唇吸舌，绷紧腹部核心。','身体整体向前倾45度（头颈不准动，保持与脊柱对齐）。','依靠大腿力量平稳拔高站起。缓慢坐回，重复。'],
+    tips:'起立瞬间严禁通过抬头来借力，全程保持头颈部对齐脊柱。如果站起时头晕，减慢速度。'
   },
   {
-    id:'m1e2', module:0, name:'坐姿靠墙多向抗阻', subtitle:'颈部多向稳定',
-    sets:'维持6秒/次，每个方向8次，每日2组', difficulty:'中等',
-    steps:["端坐靠墙，视线平视正前方。", "颈部回归中立位，可用双手环抱脑袋后面做一次轻对抗，帮助找到居中感觉。", "手掌平贴额头或侧脸，头颅尝试向前后左右平移，手掌顶住，头在空间维持静止。", "发力控制在10%以内，阻力与推力完美抵消。", "前后左右四个方向各做8次。"],
+    id:'A041', module:0, name:'90/90 墙壁呼吸', subtitle:'仰卧，臀部靠近墙面，双脚平踩墙面，膝盖和髋关节呈90度。',
+    sets:'慢呼吸8次/组，5组/日', difficulty:'中等',
+    steps:['鼻吸气4秒，感受气体填满下背部与腹部。2. 嘴长吐气8秒，感受前胸下沉。3. 吐完气屏息3秒。体会副交感神经激活带来的全身放松感。'],
+    tips:'吸气时保持胸口与锁骨不动，仅利用腹部空间进行呼吸。'
+  },
+  {
+    id:'A022', module:1, name:'平躺吸舌收下巴', subtitle:'仰卧平躺，屈膝双脚踩实，后脑勺垫硬皮书或薄毛巾卷',
+    sets:'3组×10次', difficulty:'中等',
+    steps:['完全平躺仰卧，双腿屈膝踩实床面，后脑勺下方托垫2-3厘米硬皮书。','紧闭双唇，整片舌头平铺吸吮在口腔上腭，体会喉结向上提缩。','保持舌头吸住，双眼视线向下看脚尖，下巴平行向后收缩2毫米。','感觉后脑勺与书本产生轻微接触压迫，维持10秒后平缓释放。'],
+    tips:'脖子前侧胸锁乳突肌必须保持松软，严禁发硬。若吞咽受阻或左臂麻木，需减小下巴收缩幅度。'
+  },
+  {
+    id:'A023', module:1, name:'坐姿靠墙多向抗阻', subtitle:'坐姿靠墙',
+    sets:'2组×8次', difficulty:'中等',
+    steps:['端坐靠墙，视线平视正前方。','颈部回归中立位，可用双手环抱脑袋后面做一次轻对抗，帮助找到居中感觉。','手掌平贴额头或侧脸，头颅尝试向前后左右平移，手掌顶住，头在空间维持静止。','发力控制在10%以内，阻力与推力完美抵消。前后左右四个方向各做8次。'],
     tips:'严禁引发颈部表层大筋肌肉暴起。力量控制在毫厘之间，如果脖子前侧大筋紧绷，说明用力过猛。'
   },
   {
-    id:'m2e1', module:1, name:'90/90 墙壁呼吸', subtitle:'副交感神经激活',
-    sets:'慢呼吸8次/组，5组/日', difficulty:'简单',
-    steps:["仰卧，双脚平踩墙面，膝盖和髋关节呈90度。", "鼻子吸气4秒，感受气体填满下背部与腹部。", "嘴唇嘟起，嘴巴极慢长吐气8秒，感受前胸下沉。", "吐完气后屏息3秒。", "体会副交感神经激活带来的全身放松感。"],
-    tips:'吸气时保持胸口与锁骨完全不动，严禁耸肩，仅利用腹部空间进行呼吸。'
-  },
-  {
-    id:'m3e1', module:2, name:'手部定点按压', subtitle:'枕下肌群松解',
-    sets:'按压60秒/点，每个点3次，每日2组', difficulty:'简单',
-    steps:["仰卧，后脑勺平贴床面。", "大拇指尖对准后脑勺底部大筋凹陷处（枕下肌群位置）。", "手指主动用力按压痛点，找到酸胀感明显的位置。", "维持压力的同时进行缓慢的深呼吸。", "每个点按压60秒，重复3次。"],
-    tips:'针对颈椎失稳者，按压过程中保持颈椎中立，严禁转头。按压力度以能感受到酸胀但不过度为宜。'
-  },
-  {
-    id:'m4e1', module:3, name:'站姿双指追踪', subtitle:'前庭眼动协调',
-    sets:'来回追踪为1次，10次/组，3组/日', difficulty:'中等',
-    steps:["站姿，双臂伸直高举双大拇指。", "双眼锁死大拇指指甲盖。", "在头颅完全静止的前提下，眼球用4秒匀速从左拇指横移到右拇指。", "定格1秒后，再用4秒匀速移回左拇指。", "左右来回追踪为1次。"],
-    tips:'若追踪过程中出现视线虚焦或头晕感，缩小双指间距。头颅和鼻子绝不能跟随眼神转动。'
-  },
-  {
-    id:'m5e1', module:4, name:'坐姿锁颈胸椎旋转', subtitle:'胸椎旋转分离',
-    sets:'每侧8次，左右为一组，共3组', difficulty:'中等',
-    steps:["端坐，双手交叉抱住双肩，两肩自然下沉。", "视线锁定正前方一个固定物体，头颈保持完全静止。", "驱动背部，将上背部温和向右旋转至极限。", "在极限位置深吸气撑开肋骨，呼气时尝试再转动2毫米。", "缓慢回正，再向左旋转。"],
+    id:'A001', module:2, name:'坐姿锁颈胸椎旋转', subtitle:'坐姿',
+    sets:'3组×8次', difficulty:'中等',
+    steps:['端坐，双手交叉抱住双肩，两肩自然下沉。','视线锁定正前方一个固定物体，头颈保持完全静止。','驱动背部，将上背部温和向右旋转至极限。','在极限位置深吸气撑开肋骨，呼气时尝试再转动2毫米。缓慢回正，再向左旋转。'],
     tips:'严禁头颈跟随躯干转动，确保扭力仅发生在胸椎段。旋转幅度要小，速度要慢。'
   },
   {
-    id:'m5e2', module:4, name:'站姿W型推墙', subtitle:'肩胛稳定训练',
-    sets:'12次/组，3组/日', difficulty:'简单',
-    steps:["站姿，背靠墙，双脚离墙一步远。", "双臂呈W型贴墙，手背、手肘、肩膀均接触墙面。", "慢慢向上滑行至Y型，保持肩胛骨紧贴墙面。", "匀速返回W型起始位置。"],
+    id:'A002', module:2, name:'站姿W型推墙', subtitle:'站姿靠墙',
+    sets:'3组×12次', difficulty:'中等',
+    steps:['站姿，背靠墙，双脚离墙一步远。','双臂呈W型贴墙，手背、手肘、肩膀均接触墙面。','慢慢向上滑行至Y型，保持肩胛骨紧贴墙面。','匀速返回W型起始位置。'],
     tips:'确保背部和头颅始终接触墙面，严禁含胸耸肩。上滑过程中如果肩胛骨离开墙面，说明幅度过大。'
   },
   {
-    id:'m5e3', module:4, name:'站姿单侧平衡指尖点击', subtitle:'本体感觉训练',
-    sets:'点击200次/日', difficulty:'中等',
-    steps:["站姿，单脚独立，悬空腿保持平衡。", "悬空侧手臂自然下垂。", "悬空侧大拇指依次点击食指、中指、无名指、小指。", "保持呼吸均匀，避免身体大幅度侧倾。", "左右脚各做200次。"],
+    id:'A049', module:3, name:'站姿单侧平衡指尖点击', subtitle:'站姿单腿',
+    sets:'1组×200次', difficulty:'中等',
+    steps:['站姿，单脚独立，悬空腿保持平衡。','悬空侧手臂自然下垂。','悬空侧大拇指依次点击食指、中指、无名指、小指。','保持呼吸均匀，避免身体大幅度侧倾。左右脚各做200次。'],
     tips:'动作中保持呼吸均匀，如果无法维持平衡，可靠近墙壁辅助。'
   },
   {
-    id:'m5e4', module:4, name:'缩腹前倾起立', subtitle:'核心整合训练',
-    sets:'慢速控制 8次/日', difficulty:'中等',
-    steps:["坐姿，双手叉腰。", "闭唇吸舌，绷紧腹部核心。", "身体整体向前倾45度（头颈不准动，保持与脊柱对齐）。", "依靠大腿力量平稳拔高站起。", "缓慢坐回，重复。"],
-    tips:'起立瞬间严禁通过抬头来借力，全程保持头颈部对齐脊柱。如果站起时头晕，减慢速度。'
+    id:'A053', module:3, name:'站姿双指追踪', subtitle:'站姿',
+    sets:'来回追踪为1次，10次/组，3组/日', difficulty:'中等',
+    steps:['站姿，双臂伸直高举双大拇指。2. 双眼锁死大拇指指甲盖。3. 在头颅完全静止的前提下，眼球用4秒匀速从左拇指横移到右拇指。4. 定格1秒后，再用4秒匀速移回左拇指。5. 左右来回追踪为1次。'],
+    tips:'若追踪过程中出现视线虚焦或头晕感，缩小双指间距。头颅和鼻子绝不能跟随眼神转动。'
+  }
+];
+
+
+const RELEASE_DATA = [
+  {
+    category: "一、头晕头痛的罪魁祸首",
+    icon: "&#129504;",
+    items: [
+      {
+        muscle: "枕下肌群",
+        symptom: "头晕发懵、空间失真感（一转头就晕）、后脑勺连着头皮发紧",
+        find: "顺着后脑勺正中向下摸，会摸到一块坚硬的骨头边缘。手指越过这块骨头边缘，刚滑入脖子软肉的深坑凹陷处就是。用大拇指在这个骨头下方的两侧深坑里往上顶着按，找对位置时，会有一阵直冲头顶的酸胀感。",
+        release: "<strong>眼-颈反射法：</strong>绝对不能大力揉捏或大角度扭脖子。仰卧平躺，后脑勺凹陷处垫一本硬书（包上毛巾），保持头部绝对静止。闭上眼睛，让眼球缓慢向上下左右四个极限方向转动，配合深呼吸。利用动眼神经与枕下肌群的绑定反射，通过转动眼球就能隔空让这块肌肉放松。"
+      },
+      {
+        muscle: "胸锁乳突肌",
+        symptom: "不明原因的旋转性头晕、恶心、耳鸣、眼眶后方胀痛，以及经常性落枕",
+        find: "对着镜子，把头用力转向左侧。此时脖子右前方会立刻暴起一条像粗绳子一样的肌肉。顺着耳后根的硬骨头往下捏，它一直斜向连到胸前锁骨的内侧端，整条肌肉非常容易捏住。",
+        release: "<strong>缺血性按压法：</strong>保持颈椎正立。用拇指和食指轻轻捏住这条肌肉的中段或下段，寻找里面的硬结或痛点。捏住痛点保持中等力度按压30-60秒（你会感觉酸痛向头面部放散），随后松开。这种短暂缺血后的反应性充血，能瞬间冲走炎性物质。"
+      },
+      {
+        muscle: "夹肌群与半棘肌",
+        symptom: "深层颈痛，疼痛直接顺着脖子窜到头顶，引发严重的紧张性头痛或后脑勺痛",
+        find: "先微微低头，摸到脖子正后方最突出的那排骨节（颈椎棘突）。顺着这排骨节向左或向右移开约一到两根手指的宽度。然后把头微微抬起，用手指在这个区域轻轻横向拨动，能摸到像粗筋一样的条索状硬块，这就是劳损的夹肌。",
+        release: "<strong>静态微抗阻：</strong>平躺在床上，颈部保持中立。用双手十指交叉托住后脑勺，头部向后（向床垫方向）发力，双手同时向前发力抵抗。头部保持不产生任何位移，持续静力对抗6-10秒。这能通过神经自体抑制机制，让深层痉挛的肌肉自动放松。"
+      },
+      {
+        muscle: "寰枢椎松解",
+        symptom: "颈部旋转受限，转头时感觉僵硬或有阻力",
+        find: "先低头，然后向两侧慢慢旋转，找到旋转幅度较小、感觉更僵硬的那一侧。",
+        release: "<strong>眼颈协调法：</strong>用一只手轻轻扶住与受限侧同方向的后颈部，起到轻微固定的作用。将头部缓慢转向受限的一侧，直到感觉有阻力无法继续转动。保持这个姿势，眼睛看向另一侧（与头部转动方向相反）。然后再将眼睛转回与头部相同的方向，同时尝试继续转动头部。如此重复3次。"
+      }
+    ]
+  },
+  {
+    category: "二、手麻肩沉的幕后黑手",
+    icon: "&#128170;",
+    items: [
+      {
+        muscle: "斜角肌",
+        symptom: "手臂和手指发麻（放射痛）、早上醒来手部胀痛，或者总是觉得胸闷气短",
+        find: "位于脖子前外侧，在胸锁乳突肌和斜方肌之间。顺着锁骨上方的凹陷处向深处摸，能拨动到像琴弦一样的条索。按压它时，经常会有向手臂放射的酸麻胀感。",
+        release: "<strong>定点滑压：</strong>切忌歪着脖子硬拉！保持头部正立面对前方，用对侧的中指按在锁骨上方的斜角肌痛点上，手指施加向下、向第一肋骨方向的沉重压力，持续下压拖拽，配合缓慢的深长呼吸（腹式呼吸），让肌肉随着胸廓的下降自然拉长。"
+      },
+      {
+        muscle: "斜方肌上束与肩胛提肌",
+        symptom: "肩膀沉重、颈肩交界处剧痛、连带着肩胛骨内上角酸痛无力",
+        find: "上斜方肌极好找，就是你脖子和肩膀交界处最厚、最容易被人捏的那块肌肉。肩胛提肌藏在它下面，顺着脖子侧方往下摸，一直摸到后背肩胛骨靠近脊柱最上方的那个尖角。当你落枕时，这个尖角处通常会有一个极度敏感的剧痛硬结。",
+        release: "<strong>筋膜球深压：</strong>抛弃极度侧屈脖子的拉伸法。找一个网球或硬质筋膜球，身体靠墙，将球压在肩颈交界处或肩胛骨内上角的最痛点上。身体施加压力，保持脖子不动，持续按压该点1-2分钟，直到酸痛感逐渐消散。"
+      }
+    ]
+  },
+  {
+    category: "三、圆肩驼背的力学元凶",
+    icon: "&#127981;",
+    items: [
+      {
+        muscle: "胸大肌与胸小肌",
+        symptom: "圆肩、驼背、脖子被迫前伸（探颈）。当前胸缩短时，不仅会引发手臂发麻，还会让后背的肌肉天天处于被强行拉长的酸痛状态",
+        find: "胸大肌就是我们常说的胸肌，覆盖整个前胸浅层。寻找深处的胸小肌时：用手摸到对侧锁骨最外侧，稍微向下一两寸（靠近肩膀前方的凹窝处）。当你刻意做一个含胸动作时，用两根手指往凹窝深处用力按压，会感到一阵直达肩背的强烈酸痛，那里就是紧张的胸小肌。",
+        release: "<strong>门框杠杆法：</strong>找一个门框，双手手肘弯曲90度，小臂贴在门框两侧，双脚一前一后站立。身体保持笔直，利用自身的重力缓慢向前倾斜，直到感觉胸前肌肉有温和的拉伸感。保持15-30秒。这个动作完全不需要颈椎参与，是最安全的底座解锁法。"
+      }
+    ]
+  },
+  {
+    category: "四、颈肩联动的隐藏盲区",
+    icon: "&#128204;",
+    items: [
+      {
+        muscle: "冈上肌、冈下肌与大小圆肌",
+        symptom: "感觉颈椎痛连带着肩膀里面痛，胳膊抬举受限，很多人误以为自己得了肩周炎",
+        find: "反手摸到自己后背那块三角形的骨头（肩胛骨）。这块骨头中间有一条横向凸起的骨棱（肩胛冈）。在这条骨棱上方的浅坑里就是冈上肌；骨棱下方广阔的平坦区域是冈下肌；顺着肩胛骨靠外侧边缘（靠近腋窝后方）往下摸，就是大小圆肌。",
+        release: "<strong>定点揉压：</strong>侧躺或靠墙，用网球压在肩胛骨背面的酸痛结节上，用身体重量进行定点持续按压。同时可以缓慢地做手臂的内外旋微小动作，让肌肉在按压下产生滑动松解。"
+      }
+    ]
   }
 ];
 
 const MODULES = [
-  { name:'深层颈屈肌激活', subtitle:'颈深屈肌', icon:'&#128170;', colorClass:'m1' },
-  { name:'迷走神经与呼吸调控', subtitle:'副交感激活', icon:'&#127808;', colorClass:'m2' },
-  { name:'枕下肌群减压松解', subtitle:'枕下松解', icon:'&#128100;', colorClass:'m3' },
-  { name:'本体感觉与动眼神经', subtitle:'前庭协调', icon:'&#128065;', colorClass:'m4' },
-  { name:'颈胸联动与抗载荷', subtitle:'核心整合', icon:'&#128170;', colorClass:'m5' }
+  { name:'呼吸与自律神经安抚--缓解心慌胸闷', subtitle:'呼吸安抚', icon:'&#127808;', colorClass:'m1' },
+  { name:'颈椎深层加固--拯救摇晃无力', subtitle:'深层稳定', icon:'&#128170;', colorClass:'m3' },
+  { name:'体态纠正与支架重塑--消除肩背沉重', subtitle:'体态纠正', icon:'&#127981;', colorClass:'m4' },
+  { name:'前庭与平衡重塑--缓解头晕发懵', subtitle:'前庭重塑', icon:'&#128065;', colorClass:'m5' }
 ];
 
 // ==================== STATE ====================
 
 window.POSTURE_DATA = {
   items: [
-    { id: 1, title: "抬头", keyPoint: "胸椎协同头部一起往上抬", detail: "寰枢椎上下活动度只有约10°，其余需要下颈椎段+胸椎协同。颈椎病人下颈椎段常反弓/椎间盘突出，胸椎需代偿更多。", icon: "⬆️" },
-    { id: 2, title: "低头", keyPoint: "收下巴低头，中下颈椎段不动", detail: "把东西推到桌子更远的地方，用眼球向下看。视力不好配眼镜，不要伸头凑近。洗澡时让水往头冲，不要低头让水冲脖子。", icon: "⬇️" },
-    { id: 3, title: "大幅低头场景", keyPoint: "屈髋，后背和脖子一条直线一起低下去", detail: "桌上/床上找东西、洗脸刷牙洗碗等场景。错误：仅低头、弯腰不弯腿。正确：屈髋，脊柱保持中立位整体前倾。", icon: "🔽" },
-    { id: 4, title: "左右转头", keyPoint: "先用眼睛转，再带动头往左右转", detail: "避免直接甩头。先用眼球转向目标方向，再带动头部缓慢转动，给前庭系统适应时间。", icon: "↔️" },
-    { id: 5, title: "看手机", keyPoint: "手机放在锁骨高度，收下巴低头", detail: "不要低头60度看手机。将手机举到锁骨高度，配合收下巴低头的姿势，用眼睛向下看。", icon: "📱" },
-    { id: 6, title: "电脑办公", keyPoint: "字体调大，屏幕和视线持平", detail: "字体调大避免头前倾找字。屏幕上沿与视线平齐，不要过高（会导致上颈段折叠）或过低。", icon: "💻" },
-    { id: 7, title: "大屏办公", keyPoint: "屏幕和视线持平即可", detail: "误区：不要因为之前低头多就把屏幕垫过高。正确：屏幕与视线持平，保持头颈中立位。", icon: "🖥️" },
-    { id: 8, title: "睡觉", keyPoint: "首选仰卧", detail: "首选仰卧位。侧睡通常是一侧肌肉紧张导致，需要配合松解和锻炼恢复平衡。", icon: "🛏️" },
-    { id: 9, title: "起床/躺下", keyPoint: "用手撑起身体，重新调整位置", detail: "避免用头抵着床蹭、脖子发力换位置。正确：用手支撑身体移动，保持头颈中立。", icon: "🔄" },
-    { id: 10, title: "电视/沙发", keyPoint: "后背完全靠住，脖子不悬空", detail: "后背完全靠住靠背，腰部有支撑。半躺时用颈枕支撑颈部，避免脖子悬空。", icon: "🛋️" },
-    { id: 11, title: "日常行走", keyPoint: "头顶悬线 + 鼻尖微扬 + 肩沉胛收 + 核心收紧", detail: "想象头顶有绳子向上提拉，鼻尖略高于水平线（不能多），肩膀下沉肩胛轻收，腹部核心微收紧。", icon: "🚶" }
+    { id: 1, title: "抬头", keyPoint: "胸椎协同头部一起往上抬", detail: "寰枢椎上下活动度只有约10度，其余需要下颈椎段+胸椎协同。颈椎病人下颈椎段常反弓/椎间盘突出，胸椎需代偿更多。", error: "只动脖子抬头，胸椎不参与", correct: "想象头顶有绳子向上提拉，胸椎协同伸展", icon: "⬆️" },
+    { id: 2, title: "低头", keyPoint: "收下巴低头，中下颈椎段不动", detail: "把东西推到桌子更远的地方，用眼球向下看。视力不好配眼镜，不要伸头凑近。洗澡时让水往头冲，不要低头让水冲脖子。", error: "直接低头60度，颈椎承受巨大压力", correct: "收下巴，用眼睛往下看，保持颈椎中立", icon: "⬇️" },
+    { id: 3, title: "大幅低头场景", keyPoint: "屈髋，后背和脖子一条直线一起低下去", detail: "桌上/床上找东西、洗脸刷牙洗碗等场景。错误方式：仅低头、弯腰不弯腿。正确方式：屈髋，脊柱保持中立位整体前倾。", error: "只低头弯腰，腰椎和颈椎都受压", correct: "屈髋屈膝，脊柱整体前倾保持中立", icon: "🔽" },
+    { id: 4, title: "左右转头", keyPoint: "先用眼睛转，再带动头往左右转", detail: "避免直接甩头。先用眼球转向目标方向，再带动头部缓慢转动，给前庭系统适应时间。", error: "快速甩头，前庭系统来不及适应", correct: "眼睛先看向目标，再缓慢转头", icon: "↔️" },
+    { id: 5, title: "看手机", keyPoint: "手机放在锁骨高度，收下巴低头", detail: "不要低头60度看手机（颈椎承受约27公斤压力）。将手机举到锁骨高度，配合收下巴低头的姿势，用眼睛向下看。", error: "低头60度看手机，颈椎承受巨大压力", correct: "手机举到锁骨高度，收下巴用眼看", icon: "📱" },
+    { id: 6, title: "电脑办公", keyPoint: "字体调大，屏幕和视线持平", detail: "字体调大避免头前倾找字。屏幕上沿与视线平齐，不要过高（会导致上颈段折叠）或过低。", error: "屏幕过低或字体太小，被迫伸头", correct: "屏幕与视线平齐，字体调大", icon: "💻" },
+    { id: 7, title: "大屏办公", keyPoint: "屏幕和视线持平即可", detail: "常见误区：不要因为之前低头多就把屏幕垫过高。正确方式：屏幕与视线持平，保持头颈中立位。", error: "屏幕垫得过高，上颈段过度后仰", correct: "屏幕与视线持平，保持中立", icon: "🖥️" },
+    { id: 8, title: "睡觉", keyPoint: "首选仰卧", detail: "首选仰卧位。侧睡通常是一侧肌肉紧张导致，需要配合松解和锻炼恢复平衡。枕头高度以颈椎自然曲度为准，不宜过高或过低。", error: "枕头过高或过低，侧睡姿势不当", correct: "仰卧为主，枕头高度适中支撑颈椎", icon: "🛏️" },
+    { id: 9, title: "起床/躺下", keyPoint: "用手撑起身体，不要用脖子发力", detail: "避免用头抵着床蹭、脖子发力换位置。正确方式：用手支撑身体移动，保持头颈中立。起床时先侧身，用手撑起上半身。", error: "用头抵床蹭，脖子发力起身", correct: "用手支撑，侧身起床", icon: "🔄" },
+    { id: 10, title: "电视/沙发", keyPoint: "后背完全靠住，脖子不悬空", detail: "后背完全靠住靠背，腰部有支撑。半躺时用颈枕支撑颈部，避免脖子悬空。", error: "脖子悬空无支撑", correct: "后背贴靠，颈枕支撑", icon: "🛋️" },
+    { id: 11, title: "日常行走", keyPoint: "头顶悬线 + 鼻尖微扬 + 肩沉胛收 + 核心收紧", detail: "想象头顶有绳子向上提拉，鼻尖略高于水平线（不能多），肩膀下沉肩胛轻收，腹部核心微收紧。", error: "含胸驼背，头前伸", correct: "头顶向上，肩沉胛收，核心收紧", icon: "🚶" }
   ]
 };
 
 const STORAGE_KEY = 'huohuo_week2';
-const REMINDER_KEY = 'huohuo_week2_reminder';
+const REMINDER_KEY = 'huohuo_reminder';
 const EXPORT_PREFIX = '火火第二周康复数据';
 
 let state = {
@@ -1412,9 +1514,51 @@ function confirmAction() {
 
 // ==================== NAVIGATION ====================
 
+
+// ==================== RELEASE PAGE ====================
+function renderRelease() {
+  const container = document.getElementById('releaseContent');
+  if (!container) return;
+  container.innerHTML = '';
+
+  RELEASE_DATA.forEach(function(section) {
+    section.items.forEach(function(item) {
+      var headerId = 'rel-' + section.category.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g,'') + '-' + item.muscle;
+      var secEl = document.createElement('div');
+      secEl.className = 'release-section';
+      secEl.innerHTML = 
+        '<div class="release-section-header" onclick="toggleReleaseItem(' + "'" + headerId + "'" + ')">' +
+          '<h4><span>' + section.icon + '</span> ' + section.category + ' - ' + item.muscle + '</h4>' +
+          '<span class="rs-arrow">&#9660;</span>' +
+        '</div>' +
+        '<div class="release-item-body" id="' + headerId + '">' +
+          '<div class="release-symptom">对应症状：' + item.symptom + '</div>' +
+          '<div class="release-find"><strong>如何寻找：</strong>' + item.find + '</div>' +
+          '<div class="release-method">' + item.release + '</div>' +
+        '</div>';
+      container.appendChild(secEl);
+    });
+  });
+}
+
+function toggleReleaseItem(id) {
+  var body = document.getElementById(id);
+  if (!body) return;
+  var header = body.previousElementSibling;
+  var isOpen = body.classList.contains('open');
+  if (isOpen) {
+    body.classList.remove('open');
+    header.classList.remove('expanded');
+  } else {
+    body.classList.add('open');
+    header.classList.add('expanded');
+  }
+}
+
+
 function renderPostureList() {
   const list = document.getElementById('posture-list');
-  if (!list || !window.POSTURE_DATA) return;
+  if (!list || !window.POSTURE_DATA || !window.POSTURE_DATA.items) return;
   list.innerHTML = window.POSTURE_DATA.items.map(item => `
     <div class="posture-item" data-id="${item.id}">
       <div class="posture-item-header">
@@ -1425,6 +1569,8 @@ function renderPostureList() {
       <div class="posture-item-content">
         <div class="posture-keypoint">${item.keyPoint}</div>
         <div class="posture-detail">${item.detail}</div>
+        ${item.error ? '<div class="posture-error">❌ 错误：'+item.error+'</div>' : ''}
+        ${item.correct ? '<div class="posture-correct">✅ 正确：'+item.correct+'</div>' : ''}
       </div>
     </div>
   `).join('');
@@ -1446,7 +1592,7 @@ function switchPage(page) {
   if (page === 'progress') renderProgress();
   if (page === 'posture') renderPostureList();
   if (page === 'settings') renderSettings();
-  if (page === 'library') renderLibrary();
+  if (page === 'release') renderRelease();
   if (page === 'today') renderToday();
 }
 
